@@ -37,5 +37,9 @@ module Grizzly
       Grizzly::Cursor.new(Grizzly::Comment, "/comments/show", {:access_token => @access_token, :id => status_id})
     end
       
+    def reposts(status_id)
+      Grizzly::Cursor.new(Grizzly::Repost, "/statuses/repost_timeline", {:access_token => @access_token, :id => status_id}) 
+    end
+      
   end
 end

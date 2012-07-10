@@ -5,7 +5,7 @@ module Grizzly
 
     def initialize(domain_object, url, options, items_per_page = ITEMS_PER_PAGE)
       @domain_object, @url, @options, @items_per_page = domain_object, url, options, items_per_page
-      if ( @domain_object == Grizzly::Comment || @domain_object == Grizzly::Status )
+      if ( @domain_object == Grizzly::Comment || @domain_object == Grizzly::Status || @domain_object == Grizzly::Repost )
           @current_page = 1
       else 
           @current_page = 0
@@ -20,11 +20,11 @@ module Grizzly
       @items.each { |i| block.call i }  
       @fetched_current_page = false
     end
-
+        
     def next_page?
       total_item_count = total_items
         
-        if ( @domain_object == Grizzly::Comment || @domain_object == Grizzly::Status )
+        if ( @domain_object == Grizzly::Comment || @domain_object == Grizzly::Status || @domain_object == Grizzly::Repost )
             ((@current_page - 1)* @items_per_page) < total_item_count # status comments start from page 1
         else 
             (@current_page * @items_per_page) < total_item_count
@@ -54,6 +54,7 @@ module Grizzly
       response = page_request(@url, options)
       @total_items = response["total_number"]
 
+      puts response.inspect
       @items = []
       response[@domain_object::API_COLLECTION_NAME].each do |domain_object|
         @items << @domain_object.new(domain_object) 
