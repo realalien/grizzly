@@ -1,7 +1,5 @@
 Grizzly
 ===================
-### Attention
-This forked is WIP and for personal experiments, it doesn't follow well along the social coding practices, i.e. some code was commented out for dev purpose,please fork after the owner if needed.
 
 ### About
 Grizzly is a simple API wrapper around the Weibo API V2. The name comes form the awesome Koala gem for facebook.
@@ -24,12 +22,31 @@ using omniauth. There is already a working strategy for Weibo.
 client = Grizzly::Client.new(access_token)
 ```
 
+### Getting User Information
+Once a client object has been created we can use it to download information based on a user id. Just call the user
+method and pass it a single parameter. This is the uid of the user on Weibo. This method will return a user object
+with all of the user data.
+```ruby
+user = client.user(11223344556677)
+user.name             #=> "fredchang"
+user.gender           #=> "m"
+user.followers_count  #=> 53
+
+```
+
 ### Updating Status
 First things first. Lets update the users status. This only works after a user has been logged in and has an access token.
 
 ```ruby
 client = Grizzly::Client.new(access_token)
 status = client.status_update("Dude. Weibo is awesome!")
+```
+
+### Status Comments
+Weibo supports adding comments to status updates. All comments for a status can be fetched in the following way. 
+Note that we pass the id of the status that we are intrested in
+```ruby 
+comments = client.comments(status.id)
 ```
 
 Note that all method calls made with Grizzly will always return a domain object. More often than not this domain object
@@ -100,8 +117,14 @@ end
 ### Error Handling
 Grizzly has its own set of errors that it can throw. ```Grizzly::Errors::NoAccessToken``` is thrown when the client is created with out an access token. ```Grizzly::Errors::WeiboAPI``` is thrown when ever there is an error returned by an end point of the API. This will return both a message and a weibo error code. ```Grizzly::Errors::Timeout``` will be thrown when the Weibo API is taking too long to respond to a response. There currently is a five second limit on the request time of each request made by Grizzly. Note that when your using a cursor class described above this time out applies to each request the cursor makes not the total time that the cursor takes to build the results of a given GET from the api.
 
+### Development
+Please feed free to fork, develop and send pull requests. If you plan to do this then you will need a valid weibo access token. Place this token in an access_token.yml file that can be found under the spec folder. Currently this file is in the git ignore list however you can copy the same file. Once you have done this add your access token to the file and specs will pick it up.
+
 ### Pull Requests
 The changes are that what you want to do with the API is not supported. Let me know if that is the case and I will add support for anything you need to do. I will also accept any pull requests with new features included. I did not intend to release this gem full supported with each end point mapped.
+
+### Contributors
+ * realalien (Zhu Jia Cheng)
 
 ### License
 Copyright (c) 2012 Stewart Matheson

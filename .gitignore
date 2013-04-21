@@ -1,3 +1,6 @@
 *.swp
 faraday.log
 grizzly-weibo-*
+spec/cassettes
+spec/access_token.yml
+coverage

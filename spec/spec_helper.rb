@@ -1,3 +1,6 @@
+require 'simplecov'
+SimpleCov.start
+
 require File.expand_path(File.dirname(__FILE__) + '/../lib/grizzly')
 
 require "spec_helper"
@@ -22,3 +25,9 @@ VCR.configure do |c|
     !http_message.body.valid_encoding?
   end
 end
+
+require 'settingslogic'
+class Settings < Settingslogic
+  source "#{File.dirname(__FILE__)}/access_token.yml"
+end
+
