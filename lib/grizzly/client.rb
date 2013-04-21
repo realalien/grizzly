@@ -31,5 +31,10 @@ module Grizzly
     def comments(status_id)
       Grizzly::Cursor.new(Grizzly::Comment, "/comments/show", {:access_token => @access_token, :id => status_id})
     end
+    
+    def search_suggestions_users(query_str, return_count=50)
+       request = Grizzly::Request.new(:get, "/search/suggestions/users", {:access_token => @access_token, :q => query_str, :count => return_count })
+       users = request.response.map{|e| Grizzly::User.new(e) } || []
+    end
   end
 end

@@ -55,7 +55,7 @@ module Grizzly
         raise("Unknown Response Type")
       end
 
-      if payload.has_key?("error") && payload.has_key?("error_code")
+      if payload.class == Hash && payload.has_key?("error") && payload.has_key?("error_code")
         raise Grizzly::Errors::WeiboAPI.new(payload["error"], payload["error_code"])
       end
       payload

@@ -114,5 +114,13 @@ describe Grizzly::Client do
       comments.first.id.should eql 3468810822799922
     end
   end
-    
+  
+  it "should be able to fetch users suggestions from a query string" do
+    VCR.use_cassette('suggestions_users', :record => :new_episodes) do   #  
+      client = Grizzly::Client.new(access_token)
+      users = client.search_suggestions_users("stewart", 20)
+      users.count.should be > 0
+    end
+  end
+
 end

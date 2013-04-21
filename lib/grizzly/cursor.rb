@@ -6,6 +6,7 @@ module Grizzly
     def initialize(domain_object, url, options, items_per_page = ITEMS_PER_PAGE)
       @domain_object, @url, @options, @items_per_page = domain_object, url, options, items_per_page
       @fetched_current_page = false
+      @current_page = 0
     end
 
     #Each will return the first page of results
