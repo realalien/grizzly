@@ -115,6 +115,16 @@ describe Grizzly::Client do
     end
   end
   
+  it "should fetch user details based on a user id" do
+    VCR.use_cassette('user_screen_name') do
+      client = Grizzly::Client.new(access_token)
+      user = client.user_of_screen_name("stewartmatheson")
+      
+      user.class.should eql Grizzly::User
+      user.id.should eql user_id
+    end
+  end
+  
   it "should be able to fetch users suggestions from a query string" do
     VCR.use_cassette('suggestions_users', :record => :new_episodes) do   #  
       client = Grizzly::Client.new(access_token)
